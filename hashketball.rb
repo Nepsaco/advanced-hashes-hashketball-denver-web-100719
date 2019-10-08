@@ -118,8 +118,7 @@ def game_hash
 end
 
 def num_points_scored(player)
-  library = game_hash
-  library.each do |home, team|
+  game_hash.each do |home, team|
     team.each do |team_stats, players|
       if team_stats == :players
         players.each do |player_name|
@@ -135,8 +134,7 @@ def num_points_scored(player)
 end
 
 def shoe_size(player_name)
-  library = game_hash
-  library.each do |home, team| 
+  game_hash.each do |home, team| 
     team.each do |team_stats, players|
       if team_stats == :players
         players.each do |name|
@@ -152,8 +150,7 @@ def shoe_size(player_name)
 end
 
 def team_colors(team_name)
-  library = game_hash
-  library.each do |location, team|
+  game_hash.each do |location, team|
     team.each do |team_stat, player|
       if team_stat == :team_name
         if player == team_name
@@ -171,9 +168,8 @@ def team_names
 end
   
 def player_numbers(team_name)
-  library = game_hash
   nums = []
-  library.each do |home, team| 
+  game_hash.each do |home, team| 
     if team[:team_name] == team_name
       team.each do |team_stats, players|
         if team_stats == :players
@@ -264,33 +260,34 @@ def most_points_scored
 end
 
 def winning_team
-  home_team =[]
-  away_team = []
-  game_hash.each do |home, team|
-    if home == :home
-      team.each do |team_stats, players|
-        if team_stats == :players
-          players.each do |name|
-            name.each do |names, stats|
-              home_team << stats[:points]
-            end
-          end
-        end
-      end
-    else
-      team.each do |team_stats,players|
-        if team_stats ==:players
-          players.each do |name|
-            name.each do |names, stats|
-              away_team << stats[:points]
-            end
-          end
-        end
-      end
-    end
-  end
-  home_pts = home_team.reduce(0){|sum, num| sum + num}
-  away_pts = away_team.reduce(0){|sum, num| sum + num}
+  # home_team =[]
+  # away_team = []
+  # game_hash.each do |home, team|
+  #   if home == :home
+  #     team.each do |team_stats, players|
+  #       if team_stats == :players
+  #         players.each do |name|
+  #           name.each do |names, stats|
+  #             home_team << stats[:points]
+  #           end
+  #         end
+  #       end
+  #     end
+  #   else
+  #     team.each do |team_stats,players|
+  #       if team_stats ==:players
+  #         players.each do |name|
+  #           name.each do |names, stats|
+  #             away_team << stats[:points]
+  #           end
+  #         end
+  #       end
+  #     end
+  #   end
+  # end
+  binding.pry
+  home_pts = game_hash[:home][:players][:points].reduce(0){|sum, num| sum + num}
+  away_pts = game_hash[:away][:players][:points].reduce(0){|sum, num| sum + num}
   if home_pts > away_pts 
     game_hash[:home][:team_name]
     else
